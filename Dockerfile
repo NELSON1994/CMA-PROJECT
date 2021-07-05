@@ -12,4 +12,4 @@ COPY /target/cma-project-1.0.jar cma-project-1.0.jar
 COPY config config
 EXPOSE 9099
 #COPY truststore.jks truststore.jks
-CMD ["java", "-jar", "cma-project-1.0.jar"]
+CMD ["java", "-jar", "cma-project-1.0.jar", "&"]

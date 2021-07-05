@@ -1,90 +1,102 @@
 package com.cma.cmaproject.controllers;
 
+import com.cma.cmaproject.dao.UserCreationDao;
 import com.cma.cmaproject.model.User;
 import com.cma.cmaproject.servicesImpl.UserServiceTemplate;
-import com.cma.cmaproject.wrappers.GenericResponseWrapper;
-import com.cma.cmaproject.wrappers.ResetPasswordWrapper;
-import com.cma.cmaproject.wrappers.UserLoginWrapper;
+import com.cma.cmaproject.wrappers.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/users")
 public class UsersController {
 
     @Autowired
     private UserServiceTemplate userServiceTemplate;
 
-    @PostMapping("/create")
-    public ResponseEntity<GenericResponseWrapper> createRole(@RequestBody User user) {
-        GenericResponseWrapper genericResponseWrapper = userServiceTemplate.createUser(user);
+    @PostMapping("/create/{loggedInUserID}")
+    public ResponseEntity<GenericResponseWrapper> createUser(@RequestBody UserCreationDao userCreationDao, @PathVariable Long loggedInUserID) {
+        GenericResponseWrapper genericResponseWrapper = userServiceTemplate.createUser(loggedInUserID, userCreationDao);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
 
-    @GetMapping("/viewAll")
-    public ResponseEntity<GenericResponseWrapper> viewAllUsers() {
-        GenericResponseWrapper genericResponseWrapper = userServiceTemplate.viewAllUsers();
+    @GetMapping("/viewAll/{loggedInUserID}")
+    public ResponseEntity<GenericResponseWrapper> viewAllUsersByServiceProvider( @PathVariable Long loggedInUserID) {
+        GenericResponseWrapper genericResponseWrapper = userServiceTemplate.viewAllUsers(loggedInUserID);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
 
-    @GetMapping("/view/activeUsers")
-    public ResponseEntity<GenericResponseWrapper> viewAllActiveUsers() {
-        GenericResponseWrapper genericResponseWrapper = userServiceTemplate.viewAllActiveUsers();
+    @GetMapping("/view/activeUsers/{loggedInUserID}")
+    public ResponseEntity<GenericResponseWrapper> viewAllActiveUsersByServiceProvider( @PathVariable Long loggedInUserID) {
+        GenericResponseWrapper genericResponseWrapper = userServiceTemplate.viewAllActiveUsers(loggedInUserID);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
 
-    @GetMapping("/view/inactiveUsers")
-    public ResponseEntity<GenericResponseWrapper> viewAllInActiveUsers() {
-        GenericResponseWrapper genericResponseWrapper = userServiceTemplate.viewAllInActiveUsers();
+    @GetMapping("/view/inactiveUsers/{loggedInUserID}")
+    public ResponseEntity<GenericResponseWrapper> viewAllInActiveUsersByServiceProvider( @PathVariable Long loggedInUserID) {
+        GenericResponseWrapper genericResponseWrapper = userServiceTemplate.viewAllInActiveUsers(loggedInUserID);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
 
-    @GetMapping("/view/{userId}")
-    public ResponseEntity<GenericResponseWrapper> viewOneRole(@PathVariable Long userId) {
-        GenericResponseWrapper genericResponseWrapper = userServiceTemplate.viewOneUser(userId);
+    @GetMapping("/view/{loggedInUserID}/{userId}")
+    public ResponseEntity<GenericResponseWrapper> viewOneUser( @PathVariable Long loggedInUserID,@PathVariable Long userId) {
+        GenericResponseWrapper genericResponseWrapper = userServiceTemplate.viewOneUser(loggedInUserID,userId);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
 
-    @DeleteMapping("/delete/{userId}")
-    public ResponseEntity<GenericResponseWrapper> deleteUser(@PathVariable Long userId) {
-        GenericResponseWrapper genericResponseWrapper = userServiceTemplate.deleteUser(userId);
+    @DeleteMapping("/delete/{loggedInUserID}/{userId}")
+    public ResponseEntity<GenericResponseWrapper> deleteUser( @PathVariable Long loggedInUserID,@PathVariable Long userId) {
+        GenericResponseWrapper genericResponseWrapper = userServiceTemplate.deleteUser(loggedInUserID,userId);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
 
-    @PutMapping("/update/{userId}")
-    public ResponseEntity<GenericResponseWrapper> updateUser(@PathVariable Long userId, @RequestBody User user) {
-        GenericResponseWrapper genericResponseWrapper = userServiceTemplate.updateUser(userId, user);
+    @PutMapping("/update/{loggedInUserID}/{userId}")
+    public ResponseEntity<GenericResponseWrapper> updateUser( @PathVariable Long loggedInUserID,@PathVariable Long userId, @RequestBody UserCreationDao user) {
+        GenericResponseWrapper genericResponseWrapper = userServiceTemplate.updateUser(loggedInUserID,userId, user);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
 
-    @PutMapping("/activate/{userId}")
-    public ResponseEntity<GenericResponseWrapper> activateUser(@PathVariable Long userId) {
-        GenericResponseWrapper genericResponseWrapper = userServiceTemplate.enableUser(userId);
+    @PutMapping("/activate/{loggedInUserID}/{userId}")
+    public ResponseEntity<GenericResponseWrapper> activateUser( @PathVariable Long loggedInUserID,@PathVariable Long userId) {
+        GenericResponseWrapper genericResponseWrapper = userServiceTemplate.enableUser(loggedInUserID,userId);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
 
-    @PutMapping("/deactivate/{userId}")
-    public ResponseEntity<GenericResponseWrapper> deactivateUser(@PathVariable Long userId) {
-        GenericResponseWrapper genericResponseWrapper = userServiceTemplate.disableUser(userId);
+    @PutMapping("/deactivate/{loggedInUserID}/{userId}")
+    public ResponseEntity<GenericResponseWrapper> deactivateUser( @PathVariable Long loggedInUserID,@PathVariable Long userId) {
+        GenericResponseWrapper genericResponseWrapper = userServiceTemplate.disableUser(loggedInUserID,userId);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
 
-    @PutMapping("/assign/{userId}/role/{roleIDs}")
-    public ResponseEntity<GenericResponseWrapper> assignUserRole(@PathVariable Long userId, @PathVariable Long[] roleIDs) {
-        GenericResponseWrapper genericResponseWrapper = userServiceTemplate.assignUserRole(userId, roleIDs);
+    @PutMapping("/assign/{loggedInUserID}/{userId}/roles")
+    public ResponseEntity<GenericResponseWrapper> assignUserRole( @PathVariable Long loggedInUserID,@PathVariable Long userId, @RequestBody RoleIdsWrapper wrapper) {
+        GenericResponseWrapper genericResponseWrapper = userServiceTemplate.assignUserRole(loggedInUserID,userId, wrapper);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
 
-    @PutMapping("/resetpassword")
-    public ResponseEntity<GenericResponseWrapper> resetUserPassword(@RequestBody ResetPasswordWrapper resetPasswordWrapper) {
-        GenericResponseWrapper genericResponseWrapper = userServiceTemplate.resetPassword(resetPasswordWrapper);
+    @PutMapping("/{loggedInUserID}/resetpassword")
+    public ResponseEntity<GenericResponseWrapper> resetUserPassword( @PathVariable Long loggedInUserID,@RequestBody ResetPasswordWrapper resetPasswordWrapper) {
+        GenericResponseWrapper genericResponseWrapper = userServiceTemplate.resetPassword(loggedInUserID,resetPasswordWrapper);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
 
-    @GetMapping("/login")
+    @PutMapping("/changepassword/{loggedInUserId}")
+    public ResponseEntity<GenericResponseWrapper> changePassword(@PathVariable Long loggedInUserId,@RequestBody ChangePasswordWrapper changePasswordWrapper) {
+        GenericResponseWrapper genericResponseWrapper = userServiceTemplate.changePassword(loggedInUserId,changePasswordWrapper);
+        return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
+    }
+
+    @PostMapping("/login")
     public ResponseEntity<GenericResponseWrapper> login(@RequestBody UserLoginWrapper userLoginWrapper) {
         GenericResponseWrapper genericResponseWrapper = userServiceTemplate.userLogin(userLoginWrapper);
+        return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
+    }
+
+    @GetMapping("/viewUsers/{loggedInUserId}")
+    public ResponseEntity<GenericResponseWrapper> viewUsersBySuperAdmin(@PathVariable Long loggedInUserId) {
+        GenericResponseWrapper genericResponseWrapper = userServiceTemplate.viewAllUsersBySuperAdmin(loggedInUserId);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
 

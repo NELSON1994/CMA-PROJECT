@@ -1,5 +1,6 @@
 package com.cma.cmaproject.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,6 +37,5 @@ public class CustomerOrders {
     private String intrash;
     @Column(name = "CREATION_DATE")
     private Date creationDate= new Date();
-
 
 }

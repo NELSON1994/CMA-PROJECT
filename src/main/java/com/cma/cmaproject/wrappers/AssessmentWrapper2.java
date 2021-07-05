@@ -1,4 +1,10 @@
 package com.cma.cmaproject.wrappers;
 
-public class ControlsDataAssessmentWrapper {
+import lombok.Data;
+
+import java.util.List;
+
+@Data
+public class AssessmentWrapper2 {
+    List<AssessmentWrapper22> assessmentWrapper22List;
 }

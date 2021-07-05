@@ -2,6 +2,7 @@ package com.cma.cmaproject.model;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity
 @Table(name="AUDIT_LOGS")
+@Data
 public class AuditLogs {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,6 +26,8 @@ public class AuditLogs {
     private String ipAddress;
     @Column(name = "USER")
     private String user;
+    @Column(name = "COMPANY")
+    private String companyName;
     @Column(name = "CREATION_DATE",updatable = false)
     private Date insertionDate= new Date();
 }

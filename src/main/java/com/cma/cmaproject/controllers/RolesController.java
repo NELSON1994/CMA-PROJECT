@@ -1,54 +1,58 @@
 package com.cma.cmaproject.controllers;
 
+import com.cma.cmaproject.dao.ApproveRequestIdsDao;
 import com.cma.cmaproject.model.Roles;
 import com.cma.cmaproject.servicesImpl.RolesTemplate;
+import com.cma.cmaproject.dao.GeneralRequestDao;
 import com.cma.cmaproject.wrappers.GenericResponseWrapper;
+import com.cma.cmaproject.wrappers.PermissionsIdWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/roles")
 public class RolesController {
     @Autowired
     private RolesTemplate rolesTemplate;
 
-    @PostMapping("/createRole")
-    public ResponseEntity<GenericResponseWrapper> createRole(@RequestBody Roles roles){
-        GenericResponseWrapper genericResponseWrapper=rolesTemplate.createRole(roles);
+    @PostMapping("/create/{loggedServiceProviderId}")
+    public ResponseEntity<GenericResponseWrapper> createRole(@PathVariable Long loggedServiceProviderId,@RequestBody GeneralRequestDao roles){
+        GenericResponseWrapper genericResponseWrapper=rolesTemplate.createRole(loggedServiceProviderId,roles);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
 
-    @GetMapping("/viewAllRoles")
-    public ResponseEntity<GenericResponseWrapper> viewAllRoles(){
-        GenericResponseWrapper genericResponseWrapper=rolesTemplate.viewAllRoles();
+    @GetMapping("/viewAll/{loggedServiceProviderId}")
+    public ResponseEntity<GenericResponseWrapper> viewAllRoles(@PathVariable Long loggedServiceProviderId){
+        GenericResponseWrapper genericResponseWrapper=rolesTemplate.viewAllRoles(loggedServiceProviderId);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
 
-    @GetMapping("/viewRoles/{roleId}")
-    public ResponseEntity<GenericResponseWrapper> viewOneRole(@PathVariable Long roleId){
-        GenericResponseWrapper genericResponseWrapper=rolesTemplate.viewIndividualRole(roleId);
+    @GetMapping("/view/{loggedServiceProviderId}/{roleId}")
+    public ResponseEntity<GenericResponseWrapper> viewOneRole(@PathVariable Long loggedServiceProviderId,@PathVariable Long roleId){
+        GenericResponseWrapper genericResponseWrapper=rolesTemplate.viewIndividualRole(loggedServiceProviderId,roleId);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
 
-    @DeleteMapping("/deleteRole/{roleId}")
-    public ResponseEntity<GenericResponseWrapper> deleteRole(@PathVariable Long roleId){
-        GenericResponseWrapper genericResponseWrapper=rolesTemplate.deleteRole(roleId);
+    @DeleteMapping("/delete/{loggedServiceProviderId}/{roleId}")
+    public ResponseEntity<GenericResponseWrapper> deleteRole(@PathVariable Long loggedServiceProviderId,@PathVariable Long roleId){
+        GenericResponseWrapper genericResponseWrapper=rolesTemplate.deleteRole(loggedServiceProviderId,roleId);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
-    @PutMapping("/updateRole/{roleId}")
-    public ResponseEntity<GenericResponseWrapper> updateRole(@PathVariable Long roleId,@RequestBody Roles role){
-        GenericResponseWrapper genericResponseWrapper=rolesTemplate.updateRole(roleId,role);
+    @PutMapping("/update/{loggedServiceProviderId}/{roleId}")
+    public ResponseEntity<GenericResponseWrapper> updateRole(@PathVariable Long loggedServiceProviderId,@PathVariable Long roleId,@RequestBody Roles role){
+        GenericResponseWrapper genericResponseWrapper=rolesTemplate.updateRole(loggedServiceProviderId,roleId,role);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
-    @PutMapping("/approveRole/{roleId}")
-    public ResponseEntity<GenericResponseWrapper> verifyRole(@PathVariable Long roleId){
-        GenericResponseWrapper genericResponseWrapper=rolesTemplate.approveRole(roleId);
+    @PutMapping("/approve/{loggedServiceProviderId}")
+    public ResponseEntity<GenericResponseWrapper> verifyRole(@PathVariable Long loggedServiceProviderId, @RequestBody ApproveRequestIdsDao approveRequestIdsDao){
+        GenericResponseWrapper genericResponseWrapper=rolesTemplate.approveRole(loggedServiceProviderId,approveRequestIdsDao);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
-    @PutMapping("/assignRole/{roleId}/permisions/{permissionIDs}")
-    public ResponseEntity<GenericResponseWrapper> assignPermissionsToRole(@PathVariable Long roleId, @PathVariable Long[] permissionIDs){
-        GenericResponseWrapper genericResponseWrapper=rolesTemplate.assignRolePermissions(roleId,permissionIDs);
+    @PutMapping("/assign/{loggedServiceProviderId}/{roleId}/permisions")
+    public ResponseEntity<GenericResponseWrapper> assignPermissionsToRole(@PathVariable Long loggedServiceProviderId, @PathVariable Long roleId, @RequestBody PermissionsIdWrapper permissionIDs){
+        GenericResponseWrapper genericResponseWrapper=rolesTemplate.assignRolePermissions(loggedServiceProviderId,roleId,permissionIDs);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
 }

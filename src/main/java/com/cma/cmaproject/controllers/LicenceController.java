@@ -1,50 +1,51 @@
 package com.cma.cmaproject.controllers;
 
-import com.cma.cmaproject.model.Licence;
 import com.cma.cmaproject.servicesImpl.LincenceTemplate;
 import com.cma.cmaproject.wrappers.GenericResponseWrapper;
+import com.cma.cmaproject.dao.LicenceDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/licence")
 public class LicenceController {
     @Autowired
     private LincenceTemplate lincenceTemplate;
 
-    @PostMapping("/generate/{orderId}")
-    public ResponseEntity<GenericResponseWrapper> generateLicence(@RequestBody Licence licence,@PathVariable Long orderId){
-        GenericResponseWrapper genericResponseWrapper=lincenceTemplate.generateLincense(licence,orderId);
+    @PostMapping("/generate/{loggedServiceProviderId}/{clientId}")
+    public ResponseEntity<GenericResponseWrapper> generateLicence(@RequestBody LicenceDao licence, @PathVariable Long clientId,@PathVariable Long loggedServiceProviderId){
+        GenericResponseWrapper genericResponseWrapper=lincenceTemplate.generateLincense(licence,clientId,loggedServiceProviderId);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
 
-    @GetMapping("/viewAll")
-    public ResponseEntity<GenericResponseWrapper> viewAll(){
-        GenericResponseWrapper genericResponseWrapper=lincenceTemplate.viewAllLicences();
+    @GetMapping("/viewAll/{loggedServiceProviderId}")
+    public ResponseEntity<GenericResponseWrapper> viewAllLicence(@PathVariable Long loggedServiceProviderId){
+        GenericResponseWrapper genericResponseWrapper=lincenceTemplate.viewAllLicences(loggedServiceProviderId);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
 
-    @GetMapping("/viewLicence/{licenceId}")
-    public ResponseEntity<GenericResponseWrapper> viewOneLicence(@PathVariable Long licenceId){
-        GenericResponseWrapper genericResponseWrapper=lincenceTemplate.viewIndividualLicence(licenceId);
+    @GetMapping("/view/{loggedServiceProviderId}/{licenceId}")
+    public ResponseEntity<GenericResponseWrapper> viewOneLicence(@PathVariable Long licenceId,@PathVariable Long loggedServiceProviderId){
+        GenericResponseWrapper genericResponseWrapper=lincenceTemplate.viewIndividualLicence(licenceId,loggedServiceProviderId);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
 
-    @DeleteMapping("/renew/{licenceId}")
-    public ResponseEntity<GenericResponseWrapper> renewLicence(@PathVariable Long licenceId){
-        GenericResponseWrapper genericResponseWrapper=lincenceTemplate.renewLicence(licenceId);
+    @DeleteMapping("/renew/{loggedServiceProviderId}/{clientId}")
+    public ResponseEntity<GenericResponseWrapper> renewLicence(@PathVariable Long clientId,@PathVariable Long loggedServiceProviderId){
+        GenericResponseWrapper genericResponseWrapper=lincenceTemplate.renewLicence(clientId,loggedServiceProviderId);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
 
-    @PutMapping("/activate/{userId}/licence/{licenceIds}")
-    public ResponseEntity<GenericResponseWrapper> activateLicence(@PathVariable Long userId,@PathVariable Long[] licenceIds){
-        GenericResponseWrapper genericResponseWrapper=lincenceTemplate.activateLicence(userId,licenceIds);
+    @PutMapping("/activate/{superAdminId}")
+    public ResponseEntity<GenericResponseWrapper> activateLicence(@PathVariable Long superAdminId){
+        GenericResponseWrapper genericResponseWrapper=lincenceTemplate.activateLicence(superAdminId);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
-    @PutMapping("/deactivate/{licenceId}")
-    public ResponseEntity<GenericResponseWrapper> deactivateLicence(@PathVariable Long licenceId){
-        GenericResponseWrapper genericResponseWrapper=lincenceTemplate.deactivateLicence(licenceId);
+    @PutMapping("/deactivate/{loggedServiceProviderId}/{clientId}")
+    public ResponseEntity<GenericResponseWrapper> deactivateLicence(@PathVariable Long clientId,@PathVariable Long loggedServiceProviderId){
+        GenericResponseWrapper genericResponseWrapper=lincenceTemplate.deactivateLicence(clientId,loggedServiceProviderId);
         return ResponseEntity.status(genericResponseWrapper.getCode()).body(genericResponseWrapper);
     }
 

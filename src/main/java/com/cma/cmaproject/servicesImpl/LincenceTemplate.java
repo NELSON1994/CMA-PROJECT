@@ -1,27 +1,24 @@
 package com.cma.cmaproject.servicesImpl;
 
-import com.cma.cmaproject.model.Licence;
 import com.cma.cmaproject.wrappers.GenericResponseWrapper;
+import com.cma.cmaproject.dao.LicenceDao;
 
 public interface LincenceTemplate {
     // generate linence
-    GenericResponseWrapper generateLincense(Licence licence, Long orderId);
+    GenericResponseWrapper generateLincense(LicenceDao lwrap, Long companyId, Long loggedServiceProviderId);
 
     //renew licence
-    GenericResponseWrapper renewLicence(Long licenceId);
+    GenericResponseWrapper renewLicence(Long companyId, Long loggedServiceProviderId);
 
     //activate lincense
-   // GenericResponseWrapper activateLicence(Long userId);
-
-    //activate lincense
-    GenericResponseWrapper activateLicence(Long userId, Long[] linenceIds);
+    GenericResponseWrapper activateLicence(Long userId);
 
     //deactivate lincense
-    GenericResponseWrapper deactivateLicence(Long licenceId);
+    GenericResponseWrapper deactivateLicence(Long companyId, Long loggedServiceProviderId);
 
     //view all licences
-    GenericResponseWrapper viewAllLicences();
+    GenericResponseWrapper viewAllLicences(Long loggedServiceProviderId);
 
     //view individual licence
-    GenericResponseWrapper viewIndividualLicence(Long licenceId);
+    GenericResponseWrapper viewIndividualLicence(Long licenceId, Long loggedServiceProviderId);
 }

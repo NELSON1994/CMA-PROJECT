@@ -1,20 +1,24 @@
 package com.cma.cmaproject.servicesImpl;
 
+import com.cma.cmaproject.dao.ApproveRequestIdsDao;
 import com.cma.cmaproject.model.Roles;
+import com.cma.cmaproject.dao.GeneralRequestDao;
 import com.cma.cmaproject.wrappers.GenericResponseWrapper;
+import com.cma.cmaproject.wrappers.PermissionsIdWrapper;
 
 public interface RolesTemplate {
-    GenericResponseWrapper createRole(Roles roles1);
 
-    GenericResponseWrapper viewAllRoles();
+    GenericResponseWrapper createRole(Long loggedServiceProviderId, GeneralRequestDao roles);
 
-    GenericResponseWrapper viewIndividualRole(Long ordersId);
+    GenericResponseWrapper viewAllRoles(Long loggedServiceProviderId);
 
-    GenericResponseWrapper deleteRole(Long ordersId);
+    GenericResponseWrapper viewIndividualRole(Long loggedServiceProviderId, Long ordersId);
 
-    GenericResponseWrapper updateRole(Long roleId, Roles role);
+    GenericResponseWrapper deleteRole(Long loggedServiceProviderId, Long ordersId);
 
-    GenericResponseWrapper approveRole(Long roleId);
+    GenericResponseWrapper updateRole(Long loggedServiceProviderId, Long roleId, Roles role);
 
-    GenericResponseWrapper assignRolePermissions(Long roleId, Long[] permissionsId);
+    GenericResponseWrapper approveRole(Long loggedServiceProviderId, ApproveRequestIdsDao roleId);
+
+    GenericResponseWrapper assignRolePermissions(Long loggedServiceProviderId, Long roleId, PermissionsIdWrapper wrapper);
 }

@@ -1,5 +1,6 @@
 package com.cma.cmaproject.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,4 +42,8 @@ public class User {
     @Column(name = "MODIFIED_DATE")
     private Date modifiedDate= new Date();
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "company_id", referencedColumnName = "COMPANY_ID")
+     @JsonIgnore
+    private Company company;
 }

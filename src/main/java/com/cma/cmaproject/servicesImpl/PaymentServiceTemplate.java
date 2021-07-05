@@ -1,12 +1,12 @@
 package com.cma.cmaproject.servicesImpl;
 
-import com.cma.cmaproject.model.CustomerOrders;
-import com.cma.cmaproject.model.Payment;
+import com.cma.cmaproject.dao.ApproveRequestIdsDao;
 import com.cma.cmaproject.wrappers.GenericResponseWrapper;
+import com.cma.cmaproject.dao.PaymentDao;
 
 public interface PaymentServiceTemplate {
 
-    GenericResponseWrapper makePayment(Payment payment);
+    GenericResponseWrapper makePayment(PaymentDao payment1);
 
     GenericResponseWrapper viewPaymentAll();
 
@@ -14,5 +14,9 @@ public interface PaymentServiceTemplate {
 
     GenericResponseWrapper deleteIndividualPayment(Long ordersId);
 
-    GenericResponseWrapper verifyIndividualPayment(Long ordersId);
+    GenericResponseWrapper declinePayment(ApproveRequestIdsDao approveRequestIdsDao);
+
+    GenericResponseWrapper verifyIndividualPayment(ApproveRequestIdsDao approveRequestIdsDao);
+
+    GenericResponseWrapper updatePayment(Long userId, Long paymentId, PaymentDao paymentDao);
 }

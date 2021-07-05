@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -14,8 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="PAYMENTS_DETAILS")
-public class Payment {
+@Table(name = "PAYMENTS_DETAILS")
+public class Payment implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PAYMENT_ID")
@@ -28,17 +30,23 @@ public class Payment {
     private String paymentReference;
     @Column(name = "AMOUNT")
     private int amount;
-    @Column(name = "ACTION_STATUS")//verified,not verified
+    @Column(name = "ACTION_STATUS")
     private String actionStatus;
     @Column(name = "PAYMENT_REFERENCE_CODE")
     private String paymentReferenceCode;// to be generated after payment is successful
     @Column(name = "IN_TRASH")
     private String intrash;
     @Column(name = "CREATION_DATE")
-    private Date insertionDate= new Date();
+    private Date insertionDate = new Date();
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "order_id",referencedColumnName="ORDER_ID")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "order_id", referencedColumnName = "ORDER_ID")
     @JsonIgnore
     private CustomerOrders customerOrders;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "company_id", referencedColumnName = "COMPANY_ID")
+    @JsonIgnore
+    private Company company;
+
 }

@@ -31,16 +31,18 @@ public class Licence {
     @Column(name = "IN_TRASH")
     private String intrash;
     @Column(name = "CREATION_DATE")
-    private Date creationDate= new Date();
+    private Date creationDate;
     @Column(name = "MODIFIED_DATE")
     private Date modifiedDate= new Date();
     @Column(name = "ACTIVATION_DATE")
-    private Date activationDate= new Date();
+    private Date activationDate;
+    @Column(name = "RENEWED_DATE")
+    private Date renewedDate=new Date();
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "order_id",referencedColumnName="ORDER_ID")
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name = "company_id",referencedColumnName="COMPANY_ID")
     @JsonIgnore
-    private CustomerOrders customerOrders;
+    private Company company;
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "user_id",referencedColumnName="USER_ID")

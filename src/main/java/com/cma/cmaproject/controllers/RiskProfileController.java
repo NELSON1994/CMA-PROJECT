@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 @RequestMapping("/assessment")
 
-public class AssessmentController {
+public class RiskProfileController {
     @Autowired
     private RiskAssessmentService riskAssessmentService;
 

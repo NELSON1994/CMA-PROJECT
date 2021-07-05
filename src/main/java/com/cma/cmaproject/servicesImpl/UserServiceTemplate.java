@@ -1,45 +1,54 @@
 package com.cma.cmaproject.servicesImpl;
 
+import com.cma.cmaproject.dao.UserCreationDao;
 import com.cma.cmaproject.model.User;
-import com.cma.cmaproject.wrappers.GenericResponseWrapper;
-import com.cma.cmaproject.wrappers.ResetPasswordWrapper;
-import com.cma.cmaproject.wrappers.UserLoginWrapper;
+import com.cma.cmaproject.wrappers.*;
 
 public interface UserServiceTemplate {
-    //create user
-    GenericResponseWrapper createUser(User user);
 
-    //view all users
-    GenericResponseWrapper viewAllUsers();
+    //create users
+    GenericResponseWrapper createUser(Long loggedInUserId, UserCreationDao uwrapper);
 
-    //view one user
-    GenericResponseWrapper viewOneUser(Long userId);
+    GenericResponseWrapper viewAllUsers(Long loggedInUserId);
 
-    //view active user
-    GenericResponseWrapper viewAllActiveUsers();
+    GenericResponseWrapper viewOneUser(Long loggedInUserId, Long userId);
 
-    GenericResponseWrapper viewAllInActiveUsers();
+    GenericResponseWrapper viewAllActiveUsers(Long loggedInUserId);
 
-    //delete user
-    GenericResponseWrapper deleteUser(Long userId);
+    //superadmin view users
+    GenericResponseWrapper viewAllUsersBySuperAdmin(Long loggedUserId);
 
-    //update user
-    GenericResponseWrapper updateUser(Long userId, User user);
+    //view all active users
+    GenericResponseWrapper viewAllInActiveUsers(Long loggedInUserId);
 
-    //disable user
-    GenericResponseWrapper disableUser(Long userId);
+    GenericResponseWrapper deleteUser(Long loggedInUserId, Long userId);
 
-    //activate user
-    GenericResponseWrapper enableUser(Long userId);
+    GenericResponseWrapper updateUser(Long loggedInUserId, Long userId, UserCreationDao user);
 
-    GenericResponseWrapper assignUserRole(Long userId, Long[] rolesIds);
+    GenericResponseWrapper disableUser(Long loggedInUserId, Long userId);
 
+    GenericResponseWrapper enableUser(Long loggedInUserId, Long userId);
+
+    //assign role to user
+    GenericResponseWrapper assignUserRole(Long loggedInUserId, Long userId, RoleIdsWrapper wrapper);
+
+    // update user role
+    GenericResponseWrapper updateUserRole(Long loggedInUserId, Long userId, Long RoleID);
+
+    //user login
     GenericResponseWrapper userLogin(UserLoginWrapper userLoginWrapper);
 
-    GenericResponseWrapper resetPassword(ResetPasswordWrapper resetPasswordWrapper);
+    //user first TimeLogin
+    GenericResponseWrapper changePassword(Long loggedUserId, ChangePasswordWrapper changePasswordWrapper);
 
-    //change password==> for first time log in
+    //reset password
+    GenericResponseWrapper resetPassword(Long loggedInUserId, ResetPasswordWrapper resetPasswordWrapper);
+
     String generateSixLengthPassword(String firstname);
 
     String encryptPassword(String plainTextPassword);
+
+    void saveAuditRails(String user, String company, String activity, String description);
+
+    AuditUsernameCompanyWrapper createAudit(Long UserId);
 }

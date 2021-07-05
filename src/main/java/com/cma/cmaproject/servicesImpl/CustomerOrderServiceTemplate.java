@@ -1,11 +1,14 @@
 package com.cma.cmaproject.servicesImpl;
 
-import com.cma.cmaproject.model.CustomerOrders;
+import com.cma.cmaproject.dao.ApproveRequestIdsDao;
 import com.cma.cmaproject.wrappers.GenericResponseWrapper;
+import com.cma.cmaproject.dao.OrdersDao;
 
 public interface CustomerOrderServiceTemplate {
 
-    GenericResponseWrapper createOrder(CustomerOrders customerOrders);
+  //  GenericResponseWrapper createOrder(CustomerOrders customerOrders);
+
+    GenericResponseWrapper createOrder(OrdersDao ordersDao);
 
     GenericResponseWrapper viewOrdersAll();
 
@@ -13,7 +16,7 @@ public interface CustomerOrderServiceTemplate {
 
     GenericResponseWrapper deleteIndividualOrders(Long ordersId);
 
-    GenericResponseWrapper verifyIndividualOrders(Long ordersId);
+    GenericResponseWrapper verifyIndividualOrders(ApproveRequestIdsDao approveRequestIdsDao);
 
     GenericResponseWrapper errorSection(Exception ex);
 

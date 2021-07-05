@@ -1,4 +1,4 @@
-package com.cma.cmaproject.wrappers;
+package com.cma.cmaproject.dao;
 
 import lombok.Data;
 

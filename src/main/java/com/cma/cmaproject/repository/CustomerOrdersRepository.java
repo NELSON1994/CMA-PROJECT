@@ -1,5 +1,6 @@
 package com.cma.cmaproject.repository;
 
+import com.cma.cmaproject.model.Company;
 import com.cma.cmaproject.model.CustomerOrders;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
